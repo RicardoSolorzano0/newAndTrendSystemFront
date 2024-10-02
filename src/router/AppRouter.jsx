@@ -2,9 +2,10 @@ import { Navigate, Route, Routes } from "react-router";
 import { Loading } from "../ui/components/Loading";
 import { AuthRoutes } from "../auth/routes/AuthRoutes";
 import { NewsAndTrendRoute } from "../NewsAndTrendApp/routes/NewsAndTrendRoute";
+import { store } from "../store/store";
 
 export const AppRouter = () => {
-  const statusAuth = "authenticated"; // "not-authenticated" "authenticated" "loading"
+  const { statusAuth } = store();
 
   if (statusAuth === "loading") {
     return <Loading />;

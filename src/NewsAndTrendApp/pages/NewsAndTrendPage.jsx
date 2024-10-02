@@ -1,3 +1,5 @@
+import { Nav } from "../../ui/components/Navigation/Nav";
+
 export const NewsAndTrendPage = () => {
-  return <div>NewsAndTrendPage</div>;
+  return <Nav>NewsAndTrendPage</Nav>;
 };

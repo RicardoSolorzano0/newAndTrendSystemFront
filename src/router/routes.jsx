@@ -17,6 +17,7 @@ export const routes = [
     nested: false,
     routes: [],
     active: true,
+    description: "Pagina principal",
   },
   {
     path: "/news",
@@ -26,6 +27,8 @@ export const routes = [
     nested: false,
     routes: [],
     active: true,
+    description:
+      "Encuentra noticias relevantes sobre cualquier tema de tu interés.",
   },
   {
     path: "/trends",
@@ -35,6 +38,7 @@ export const routes = [
     nested: false,
     routes: [],
     active: true,
+    description: "Descubre las tendencias más populares",
   },
   {
     path: "/analysis",
@@ -44,6 +48,7 @@ export const routes = [
     nested: false,
     routes: [],
     active: true,
+    description: "Analiza el sentimiento de cualquier texto",
   },
   {
     path: "/history",
@@ -53,5 +58,7 @@ export const routes = [
     nested: false,
     routes: [],
     active: true,
+    description:
+      "Guarda y revisa tus análisis anteriores para un seguimiento efectivo",
   },
 ];

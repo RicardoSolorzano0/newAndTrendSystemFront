@@ -1,17 +1,17 @@
+export const usersInitValue = {
+    userName: "",
+    email: "",
+    _id: "",
+    accessToken: null,
+    refreshToken: null,
+}
+
 export const authStore = (set) => {
     return {
-        users: {
-            userName: "",
-            email: "",
-            rol: "",
-            id: "",
-            token: "",
-            status: "",
-            img: "",
-        },
+        user: usersInitValue,
         statusAuth: "not-authenticated", // 'loading', 'authehnticated', 'not-authenticated'
-        logout: () => set({ statusAuth: "not-authenticated" }),
-        login: () => set({ statusAuth: "authenticated" }),
-        // setUser: (user) => set({ user }),
+        logoutStore: () => set({ statusAuth: "not-authenticated" }),
+        loginStore: () => set({ statusAuth: "authenticated" }),
+        setUser: (user) => set({ user }),
     }
 }

@@ -4,8 +4,19 @@ import { LayoutAuth } from "../layout/LayoutAuth";
 import Grid from "@mui/material/Grid2";
 import { Button, IconButton, TextField, Typography } from "@mui/material";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import { register as registerUser } from "../../store/auth/auth";
+import { AlertUI } from "../../ui/components/AlertUI";
+import { useState } from "react";
+import { store } from "../../store/store";
 
 export const RegisterPage = () => {
+  const { setUser, loginStore } = store();
+  const [alert, setAlert] = useState({
+    open: false,
+    type: "",
+    text: "",
+  });
+
   const navigate = useNavigate();
   const {
     register,
@@ -13,7 +24,34 @@ export const RegisterPage = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (form) => {
+    const { username, email, password } = form;
+    const { msg, accessToken, refreshToken, user } = await registerUser(
+      username,
+      email,
+      password
+    );
+
+    if (msg) {
+      setAlert({
+        open: true,
+        type: "error",
+        text: msg,
+      });
+    } else {
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser({ ...user, accessToken, refreshToken });
+      loginStore();
+
+      setAlert({
+        open: true,
+        type: "success",
+        text: "Registro exitoso",
+      });
+    }
+  };
 
   return (
     <LayoutAuth
@@ -29,17 +67,17 @@ export const RegisterPage = () => {
               fullWidth
               label="Usuario"
               type="text"
-              name="userName"
+              name="username"
               placeholder="Usuario"
-              {...register("userName", {
+              {...register("username", {
                 required: "El usuario es obligatorio",
                 minLength: {
                   value: 5,
                   message: "El usuario debe tener al menos 5 caracteres",
                 },
               })}
-              error={errors.userName ? true : false}
-              helperText={errors.userName?.message}
+              error={errors.username ? true : false}
+              helperText={errors.username?.message}
             />
           </Grid>
           <Grid size={12}>
@@ -98,6 +136,7 @@ export const RegisterPage = () => {
           </Grid>
         </Grid>
       </form>
+      <AlertUI alert={alert} setAlert={setAlert} />
     </LayoutAuth>
   );
 };

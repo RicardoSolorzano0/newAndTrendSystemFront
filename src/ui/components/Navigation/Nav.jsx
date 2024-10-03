@@ -3,52 +3,115 @@ import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Avatar,
+  IconButton,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import { routes } from "../../../router/routes";
 import { NavNested } from "./NavNested";
 import { NavOption } from "./NavOption";
 import { Link } from "react-router-dom";
+import { store } from "../../../store/store";
+import CloseIcon from "@mui/icons-material/Close";
+import { usersInitValue } from "../../../store/auth/authStore";
 
 export const Nav = ({ children }) => {
+  const { user, logoutStore, setUser } = store();
+  const { username } = user;
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    logoutStore();
+    setUser(usersInitValue);
+  };
+
   const DrawerList = (
     <Box
-      sx={{ width: 250 }}
       role="presentation"
+      sx={{
+        width: 250,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
       // onClick={toggleDrawer(false)}
     >
-      <List>
-        {routes.map(({ path, name, icon, nested, routes }) => (
-          <ListItem
-            key={path}
-            disablePadding
-            sx={{ color: "black" }}
-            component={Link}
-            to={path}
-          >
-            {!nested ? (
-              <NavOption name={name} icon={icon} toggleDrawer={toggleDrawer} />
-            ) : (
-              <NavNested
-                path={path}
-                name={name}
-                icon={icon}
-                nested={nested}
-                routes={routes}
-                toggleDrawer={toggleDrawer}
-              />
-            )}
-          </ListItem>
-        ))}
-      </List>
+      <Box
+        sx={{
+          height: "calc(100vh - 64px)",
+          overflow: "auto",
+        }}
+      >
+        <Typography variant="h6" sx={{ textAlign: "center" }}>
+          Menú
+        </Typography>
+        <List>
+          {routes.map(({ path, name, icon, nested, routes }) => (
+            <ListItem
+              key={path}
+              disablePadding
+              sx={{ color: "black" }}
+              component={Link}
+              to={path}
+            >
+              {!nested ? (
+                <NavOption
+                  name={name}
+                  icon={icon}
+                  toggleDrawer={toggleDrawer}
+                />
+              ) : (
+                <NavNested
+                  path={path}
+                  name={name}
+                  icon={icon}
+                  nested={nested}
+                  routes={routes}
+                  toggleDrawer={toggleDrawer}
+                />
+              )}
+            </ListItem>
+          ))}
+        </List>
+      </Box>
       <Divider />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: 1,
+        }}
+      >
+        <Avatar
+          alt="Remy Sharp"
+          src="https://i.pinimg.com/564x/8f/ef/f9/8feff93941a2425f1d7b98118625a17d.jpg"
+        />
+        <Typography>{username}</Typography>
+        <Tooltip title="Cerrar sesión">
+          <IconButton
+            aria-label="delete"
+            size="small"
+            onClick={() => {
+              handleLogout();
+            }}
+          >
+            <CloseIcon fontSize="inherit" />
+          </IconButton>
+        </Tooltip>
+      </Box>
     </Box>
   );
 
@@ -77,7 +140,7 @@ export const Nav = ({ children }) => {
             component={Link}
             to={"/"}
           >
-            News and Trends
+            Noticias y tendencias
           </Typography>
         </Toolbar>
       </AppBar>

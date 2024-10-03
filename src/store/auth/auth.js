@@ -1,32 +1,36 @@
-import authApi from "../../api/authApi";
+import axios from "axios";
 
-export const login = async (username, password) => {
+export const login = async (email, password) => {
     try {
-        const { data } = await authApi.post('/login', { username, password });
-        const { accessToken, refreshToken } = data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        return { accessToken, refreshToken };
-
+        const { data } = await axios.post('http://localhost:5000/users/login', { email, password });
+        const { accessToken, refreshToken, user } = data;
+        return { accessToken, refreshToken, user };
     } catch (error) {
-        console.error('Error during login', error);
+        console.error('Error durante el login', error);
     }
 };
 
-export const logout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    return { accessToken: null, refreshToken: null };
-};
+export const register = async (username, email, password) => {
+    try {
+        const { data } = await axios.post('http://localhost:5000/users/register', { username, email, password });
+        return { ...data };
+    } catch (error) {
+        console.log("Error en register", error)
+        const { response } = error;
+        const { data } = response;
+        const { msg } = data
+        return { msg }
+    }
+}
+
 
 export const refreshAccessToken = async (refreshToken) => {
     try {
-        const { data } = await authApi.post('/refresh-token', { refreshToken });
+        const { data } = await axios.post('/refresh-token', { refreshToken });
         const { accessToken } = data;
         localStorage.setItem('accessToken', accessToken);
         return { accessToken };
     } catch (error) {
-        console.error('Error refreshing token', error);
-        logout();
+        console.error('Error refrescando token', error);
     }
 };

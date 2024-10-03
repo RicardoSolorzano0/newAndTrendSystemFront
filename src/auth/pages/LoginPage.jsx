@@ -4,8 +4,11 @@ import { LayoutAuth } from "../layout/LayoutAuth";
 import Grid from "@mui/material/Grid2";
 import { Button, IconButton, TextField, Typography } from "@mui/material";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import { login } from "../../store/auth/auth";
+import { store } from "../../store/store";
 
 export const LoginPage = () => {
+  const { setUser, loginStore } = store();
   const navigate = useNavigate();
   const {
     register,
@@ -14,9 +17,13 @@ export const LoginPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const info = data;
-    // const info = await login(username, password);
-    console.log(info, "revisando la data");
+    const { password, username } = data;
+    const { accessToken, refreshToken, user } = await login(username, password);
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser({ ...user, accessToken, refreshToken });
+    loginStore();
   };
 
   return (

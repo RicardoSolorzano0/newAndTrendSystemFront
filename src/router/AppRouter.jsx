@@ -1,32 +1,15 @@
-import { Navigate, Route, Routes, useNavigate } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import { Loading } from "../ui/components/Loading";
 import { AuthRoutes } from "../auth/routes/AuthRoutes";
 import { NewsAndTrendRoute } from "../NewsAndTrendApp/routes/NewsAndTrendRoute";
 import { store } from "../store/store";
 import { useEffect } from "react";
 import { refreshAccessToken } from "../store/auth/auth";
+import { useUserHook } from "../NewsAndTrendApp/hooks/useUserHook";
 
 export const AppRouter = () => {
-  const { statusAuth, loginStore, setUser, user } = store();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    //evaluando que exista token en el local storage
-    if (
-      localStorage.getItem("accessToken") &&
-      localStorage.getItem("refreshToken") &&
-      localStorage.getItem("user")
-    ) {
-      const accessToken = localStorage.getItem("accessToken");
-      const refreshToken = localStorage.getItem("refreshToken");
-      const user = JSON.parse(localStorage.getItem("user"));
-      //recuperando el location de el local storage
-      const location = localStorage.getItem("location");
-      navigate(location);
-      setUser({ ...user, accessToken, refreshToken });
-      loginStore();
-    }
-  }, []);
+  const { statusAuth, loginStore, setUser } = store();
+  const { user } = useUserHook();
 
   const refresh = async (accesstoken, refreshToken) => {
     const { data } = await refreshAccessToken(accesstoken, refreshToken);

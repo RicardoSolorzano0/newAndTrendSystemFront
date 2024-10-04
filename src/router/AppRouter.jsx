@@ -23,7 +23,6 @@ export const AppRouter = () => {
       //recuperando el location de el local storage
       const location = localStorage.getItem("location");
       navigate(location);
-      console.log(location, "almacenada");
       setUser({ ...user, accessToken, refreshToken });
       loginStore();
     }

@@ -9,10 +9,12 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { routes } from "../../router/routes";
 
 export const NewsAndTrendPage = () => {
+  const location = useLocation();
+  localStorage.setItem("location", location.pathname);
   return (
     <Nav>
       <Box>

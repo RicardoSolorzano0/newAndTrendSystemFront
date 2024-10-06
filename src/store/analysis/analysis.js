@@ -1,8 +1,8 @@
 import analysisApi from "../../api/analysisApi";
 
-export const analyzeSentiment = async (headlines, user, topic = "Análisis de Texto") => {
+export const analyzeSentiment = async (headlines, user, topic = "Análisis de Texto", language) => {
     try {
-        const { data } = await analysisApi.post(`/`, { headlines, user, topic });
+        const { data } = await analysisApi.post(`/`, { headlines, user, topic, language });
         return data
     } catch (error) {
         const { response } = error;

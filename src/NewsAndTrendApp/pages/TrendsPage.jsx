@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getTrends } from "../../store/trends/trends";
 import {
   Box,
+  Button,
   Card,
   CardContent,
   CircularProgress,
@@ -14,8 +15,12 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { AlertUI } from "../../ui/components/AlertUI";
+import { useUserHook } from "../hooks/useUserHook";
+import { analyzeSentiment } from "../../store/analysis/analysis";
 
 export const TrendsPage = () => {
+  const { user } = useUserHook();
+  const { id } = user;
   const location = useLocation();
   localStorage.setItem("location", location.pathname);
 
@@ -43,6 +48,11 @@ export const TrendsPage = () => {
     setPagination({ currentPage, totalPages });
     setLoading(false);
     setTrends(articles);
+  };
+
+  const handleSaveTrendsSentimental = async (item) => {
+    const { description, title } = item;
+    await analyzeSentiment(description, id, title, "English");
   };
 
   useEffect(() => {
@@ -86,13 +96,15 @@ export const TrendsPage = () => {
                       <Typography variant="body2">
                         {item.description}
                       </Typography>
-                      <Link
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Leer más
-                      </Link>
+                      <Button onClick={() => handleSaveTrendsSentimental(item)}>
+                        <Link
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Leer más
+                        </Link>
+                      </Button>
                     </CardContent>
                   </Card>
                 </Grid>

@@ -8,7 +8,7 @@ import { login } from "../../store/auth/auth";
 import { store } from "../../store/store";
 
 export const LoginPage = () => {
-  const { setUser, loginStore } = store();
+  const { setUser, loginStore, setLoading } = store();
   const navigate = useNavigate();
   const {
     register,
@@ -17,6 +17,7 @@ export const LoginPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setLoading();
     const { password, username } = data;
     const { accessToken, refreshToken, user } = await login(username, password);
     localStorage.setItem("accessToken", accessToken);

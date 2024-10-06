@@ -12,6 +12,7 @@ export const authStore = (set) => {
         statusAuth: "not-authenticated", // 'loading', 'authehnticated', 'not-authenticated'
         logoutStore: () => set({ statusAuth: "not-authenticated" }),
         loginStore: () => set({ statusAuth: "authenticated" }),
+        setLoading: () => set({ statusAuth: "loading" }),
         setUser: (user) => set({ user }),
     }
 }

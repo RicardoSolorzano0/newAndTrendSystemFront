@@ -10,7 +10,7 @@ import { useState } from "react";
 import { store } from "../../store/store";
 
 export const RegisterPage = () => {
-  const { setUser, loginStore } = store();
+  const { setUser, loginStore, setLoading } = store();
   const [alert, setAlert] = useState({
     open: false,
     type: "",
@@ -25,6 +25,7 @@ export const RegisterPage = () => {
   } = useForm();
 
   const onSubmit = async (form) => {
+    setLoading();
     const { username, email, password } = form;
     const { msg, accessToken, refreshToken, user } = await registerUser(
       username,

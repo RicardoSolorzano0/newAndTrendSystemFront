@@ -52,12 +52,15 @@ export const NewsPage = () => {
   const onSubmit = async (form) => {
     setLoading(true);
     const { topic } = form;
-    const { err, articles, currentPage, totalPages } = await getNews(topic, 1);
-    if (err) {
+    const { message, articles, currentPage, totalPages } = await getNews(
+      topic,
+      1
+    );
+    if (message) {
       setAlert({
         open: true,
         type: "error",
-        text: err,
+        text: message,
       });
       setNews([]);
       setLoading(false);
@@ -70,7 +73,22 @@ export const NewsPage = () => {
 
   const handlePageChange = async (event, value) => {
     setLoading(true);
-    const { articles, currentPage, totalPages } = await getNews(topic, value);
+    const { articles, currentPage, totalPages, message } = await getNews(
+      topic,
+      value
+    );
+
+    if (message) {
+      setAlert({
+        open: true,
+        type: "error",
+        text: message,
+      });
+      setNews([]);
+      setLoading(false);
+      return;
+    }
+
     setPagination({ currentPage, totalPages });
     setLoading(false);
     setNews(articles);

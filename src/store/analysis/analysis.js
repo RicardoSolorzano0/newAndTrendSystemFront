@@ -1,8 +1,8 @@
-import axios from "axios";
+import analysisApi from "../../api/analysisApi";
 
 export const analyzeSentiment = async (headlines, user, topic = "Análisis de Texto") => {
     try {
-        const { data } = await axios.post(`http://localhost:5000/analyze`, { headlines, user, topic });
+        const { data } = await analysisApi.post(`/`, { headlines, user, topic });
         return data
     } catch (error) {
         const { response } = error;

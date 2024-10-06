@@ -1,8 +1,8 @@
-import axios from "axios";
+import trendsApi from "../../api/trendsApi";
 
 export const getTrends = async (page) => {
     try {
-        const { data } = await axios.get(`http://localhost:5000/trends?page=${page}`);
+        const { data } = await trendsApi.get(`?page=${page}`);
         return data
     } catch (error) {
         const { response } = error;

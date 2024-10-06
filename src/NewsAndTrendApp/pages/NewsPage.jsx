@@ -17,8 +17,12 @@ import { getNews } from "../../store/news/news";
 import { useForm } from "react-hook-form";
 import { AlertUI } from "../../ui/components/AlertUI";
 import { useLocation } from "react-router";
+import { analyzeSentiment } from "../../store/analysis/analysis";
+import { useUserHook } from "../hooks/useUserHook";
 
 export const NewsPage = () => {
+  const { user } = useUserHook();
+  const { id } = user;
   const location = useLocation();
   localStorage.setItem("location", location.pathname);
 
@@ -70,6 +74,11 @@ export const NewsPage = () => {
     setPagination({ currentPage, totalPages });
     setLoading(false);
     setNews(articles);
+  };
+
+  const handleSaveNewsSentimental = async (item) => {
+    const { description, title } = item;
+    await analyzeSentiment(description, id, title);
   };
 
   return (
@@ -135,16 +144,18 @@ export const NewsPage = () => {
                         {item.source.name} -{" "}
                         {new Date(item.publishedAt).toLocaleDateString()}
                       </Typography>
-                      <Typography variant="body2" paragraph>
+                      <Typography variant="body2">
                         {item.description}
                       </Typography>
-                      <Link
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Leer más
-                      </Link>
+                      <Button onClick={() => handleSaveNewsSentimental(item)}>
+                        <Link
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Leer más
+                        </Link>
+                      </Button>
                     </CardContent>
                   </Card>
                 </Grid>

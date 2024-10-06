@@ -83,7 +83,7 @@ export const TrendsPage = () => {
                         {item.source.name} -{" "}
                         {new Date(item.publishedAt).toLocaleDateString()}
                       </Typography>
-                      <Typography variant="body2" paragraph>
+                      <Typography variant="body2">
                         {item.description}
                       </Typography>
                       <Link

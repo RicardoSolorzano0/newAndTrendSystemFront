@@ -3,12 +3,10 @@ import {
   Button,
   Card,
   CardContent,
-  // CardMedia,
   CircularProgress,
   Link,
   Pagination,
   TextField,
-  // Tooltip,
   Typography,
 } from "@mui/material";
 import { Nav } from "../../ui/components/Navigation/Nav";

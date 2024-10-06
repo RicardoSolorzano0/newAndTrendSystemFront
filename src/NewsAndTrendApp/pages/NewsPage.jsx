@@ -96,7 +96,15 @@ export const NewsPage = () => {
 
   const handleSaveNewsSentimental = async (item) => {
     const { description, title } = item;
-    await analyzeSentiment(description, id, title);
+    const { message } = await analyzeSentiment(description, id, title);
+    if (message) {
+      setAlert({
+        open: true,
+        type: "error",
+        text: message,
+      });
+      return;
+    }
   };
 
   return (

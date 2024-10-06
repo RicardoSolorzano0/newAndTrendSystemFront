@@ -11,10 +11,17 @@ import { useForm } from "react-hook-form";
 import { analysisStore } from "../../store/analysis/analysisStore";
 import { analyzeSentiment } from "../../store/analysis/analysis";
 import { useUserHook } from "../hooks/useUserHook";
+import { AlertUI } from "../../ui/components/AlertUI";
+import { useState } from "react";
 
 export const AnalysisPage = () => {
   const { user } = useUserHook();
   const { id } = user;
+  const [alert, setAlert] = useState({
+    open: false,
+    type: "",
+    text: "",
+  });
 
   const { analysis, setAnalysis } = analysisStore();
 
@@ -29,7 +36,18 @@ export const AnalysisPage = () => {
 
   const onSubmit = async (form) => {
     const { headlines } = form;
-    const { results, sentiment } = await analyzeSentiment(headlines, id);
+    const { results, sentiment, message } = await analyzeSentiment(
+      headlines,
+      id
+    );
+    if (message) {
+      setAlert({
+        open: true,
+        type: "error",
+        text: message,
+      });
+      return;
+    }
     setAnalysis({ sentiment: results, score: sentiment });
   };
 
@@ -69,6 +87,7 @@ export const AnalysisPage = () => {
           </CardContent>
         </Card>
       )}
+      <AlertUI alert={alert} setAlert={setAlert} />
     </Nav>
   );
 };

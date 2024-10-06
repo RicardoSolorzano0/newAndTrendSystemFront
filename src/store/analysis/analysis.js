@@ -8,6 +8,6 @@ export const analyzeSentiment = async (headlines, user, topic = "Análisis de Te
         const { response } = error;
         const { data } = response;
         const { message } = data;
-        return { err: message }
+        return { message }
     }
 };

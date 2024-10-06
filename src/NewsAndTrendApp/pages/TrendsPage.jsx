@@ -64,7 +64,20 @@ export const TrendsPage = () => {
 
   const handleSaveTrendsSentimental = async (item) => {
     const { description, title } = item;
-    await analyzeSentiment(description, id, title, "English");
+    const { message } = await analyzeSentiment(
+      description,
+      id,
+      title,
+      "English"
+    );
+    if (message) {
+      setAlert({
+        open: true,
+        type: "error",
+        text: message,
+      });
+      return;
+    }
   };
 
   useEffect(() => {

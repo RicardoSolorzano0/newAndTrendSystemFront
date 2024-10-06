@@ -8,6 +8,6 @@ export const getHistory = async (id, page) => {
         const { response } = error;
         const { data } = response;
         const { message } = data;
-        return { err: message };
+        return { message };
     }
 }

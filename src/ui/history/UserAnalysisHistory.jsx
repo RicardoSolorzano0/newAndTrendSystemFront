@@ -15,6 +15,7 @@ import Grid from "@mui/material/Grid2";
 import { PieAnalysisUI } from "../components/PieAnalysisUI";
 import { Stadistic } from "../components/Stadistic";
 import { PaginationHistory } from "../components/PaginationHistory";
+import { AlertUI } from "../components/AlertUI";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -30,6 +31,12 @@ export default function UserAnalysisHistory() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  const [alert, setAlert] = useState({
+    open: false,
+    type: "",
+    text: "",
+  });
 
   const paginatedHistory = history.slice(
     (page - 1) * ITEMS_PER_PAGE,
@@ -62,7 +69,15 @@ export default function UserAnalysisHistory() {
   };
 
   const getData = async () => {
-    const { history } = await getHistory(id, page);
+    const { history, message } = await getHistory(id, page);
+    if (message) {
+      setAlert({
+        open: true,
+        type: "error",
+        text: message,
+      });
+      return;
+    }
     setHistory(history);
   };
 
@@ -144,6 +159,7 @@ export default function UserAnalysisHistory() {
         ITEMS_PER_PAGE={ITEMS_PER_PAGE}
         handleChangePage={handleChangePage}
       />
+      <AlertUI alert={alert} setAlert={setAlert} />
     </Box>
   );
 }

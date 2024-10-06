@@ -44,7 +44,19 @@ export const TrendsPage = () => {
 
   const getData = async (value) => {
     setLoading(true);
-    const { articles, currentPage, totalPages } = await getTrends(value);
+    const { articles, currentPage, totalPages, message } = await getTrends(
+      value
+    );
+    if (message) {
+      setAlert({
+        open: true,
+        type: "error",
+        text: message,
+      });
+      setTrends([]);
+      setLoading(false);
+      return;
+    }
     setPagination({ currentPage, totalPages });
     setLoading(false);
     setTrends(articles);
@@ -124,7 +136,7 @@ export const TrendsPage = () => {
 
         {!loading && trends.length === 0 && (
           <Typography variant="body1" align="center" sx={{ mt: 2 }}>
-            No se encontraron resultados para la búsqueda
+            No se encontraron resultados
           </Typography>
         )}
       </Box>

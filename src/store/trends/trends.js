@@ -8,6 +8,6 @@ export const getTrends = async (page) => {
         const { response } = error;
         const { data } = response;
         const { message } = data;
-        return { err: message }
+        return { message }
     }
 };

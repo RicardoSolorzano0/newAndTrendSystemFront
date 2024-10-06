@@ -1,8 +1,8 @@
-import axios from "axios";
+import historyApi from "../../api/historyApi";
 
 export const getHistory = async (id, page) => {
     try {
-        const { data } = await axios.get(`http://localhost:5000/history?id=${id}&page=${page}`);
+        const { data } = await historyApi.get(`?id=${id}&page=${page}`);
         return data;
     } catch (error) {
         const { response } = error;

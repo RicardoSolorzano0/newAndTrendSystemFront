@@ -76,7 +76,7 @@ export default function AdminAnalysisHistoryAdmin() {
   };
 
   const getData = async () => {
-    const { history } = await getHistory(id, page);
+    const { history } = await getHistory(id);
     setHistory(history);
   };
 

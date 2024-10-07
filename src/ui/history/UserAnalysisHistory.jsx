@@ -69,7 +69,7 @@ export default function UserAnalysisHistory() {
   };
 
   const getData = async () => {
-    const { history, message } = await getHistory(id, page);
+    const { history, message } = await getHistory(id);
     if (message) {
       setAlert({
         open: true,

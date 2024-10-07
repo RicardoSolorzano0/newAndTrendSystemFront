@@ -25,21 +25,21 @@ export const RegisterPage = () => {
   } = useForm();
 
   const onSubmit = async (form) => {
-    setLoading();
     const { username, email, password } = form;
-    const { msg, accessToken, refreshToken, user } = await registerUser(
+    const { accessToken, refreshToken, user, message } = await registerUser(
       username,
       email,
       password
     );
 
-    if (msg) {
+    if (message) {
       setAlert({
         open: true,
         type: "error",
-        text: msg,
+        text: message,
       });
     } else {
+      setLoading();
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(user));

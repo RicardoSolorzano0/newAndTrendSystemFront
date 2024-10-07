@@ -6,10 +6,17 @@ import { Button, IconButton, TextField, Typography } from "@mui/material";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { login } from "../../store/auth/auth";
 import { store } from "../../store/store";
+import { useState } from "react";
+import { AlertUI } from "../../ui/components/AlertUI";
 
 export const LoginPage = () => {
   const { setUser, loginStore, setLoading } = store();
   const navigate = useNavigate();
+  const [alert, setAlert] = useState({
+    open: false,
+    type: "",
+    text: "",
+  });
   const {
     register,
     handleSubmit,
@@ -17,9 +24,21 @@ export const LoginPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setLoading();
     const { password, username } = data;
-    const { accessToken, refreshToken, user } = await login(username, password);
+    const { accessToken, refreshToken, user, message } = await login(
+      username,
+      password
+    );
+    console.log(message, "revisando si tiene error");
+    if (message) {
+      setAlert({
+        open: true,
+        type: "error",
+        text: message,
+      });
+      return;
+    }
+    setLoading();
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
     localStorage.setItem("user", JSON.stringify(user));
@@ -89,6 +108,7 @@ export const LoginPage = () => {
           </Grid>
         </Grid>
       </form>
+      <AlertUI alert={alert} setAlert={setAlert} />
     </LayoutAuth>
   );
 };
